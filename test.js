@@ -24,6 +24,7 @@ const products = [
     price: 1500,
     button: 'Free Shipping',
     count: 0,
+    type:'laptop'
 
   },
   {
@@ -34,6 +35,7 @@ const products = [
     price: 400,
     button: 'Free Shipping',
     count: 0,
+    type:'laptop'
 
   },
   {
@@ -44,7 +46,7 @@ const products = [
     price: 450,
     button: 'Free Shipping',
     count: 0,
-
+    type:'laptop'
   },
   {
     id: 4,
@@ -54,7 +56,7 @@ const products = [
     price: 1340,
     button: 'Free Shipping',
     count: 0,
-
+    type:'laptop'
   },
   {
     id: 5,
@@ -64,7 +66,7 @@ const products = [
     price: 800,
     button: 'Free Shipping',
     count: 0,
-
+    type:'laptop'
   },
   {
     id: 6,
@@ -74,7 +76,7 @@ const products = [
     price: 20,
     button: 'Free Shipping',
     count: 0,
-
+    type: 'laptop'
   },
   {
     id: 7,
@@ -84,7 +86,7 @@ const products = [
     price: 20,
     button: 'Free Shipping',
     count: 0,
-
+    type: 'headphone'
   },
   {
     id: 8,
@@ -94,6 +96,7 @@ const products = [
     price: 20,
     button: 'Free Shipping',
     count: 0,
+    type: 'headphone'
   },
   {
     id: 9,
@@ -103,6 +106,7 @@ const products = [
     price: 60,
     button: 'Free Shipping',
     count: 0,
+    type: 'earphone'
   },
   {
     id: 10,
@@ -112,6 +116,7 @@ const products = [
     price: 30,
     button: 'Free Shipping',
     count: 0,
+    type: 'earphone'
   },
   {
     id: 11,
@@ -121,6 +126,7 @@ const products = [
     price: 900,
     button: 'Free Shipping',
     count: 0,
+    type: 'case'
   },
   {
     id: 12,
@@ -130,6 +136,7 @@ const products = [
     price: 790,
     button: 'Free Shipping',
     count: 0,
+    type: 'case'
   }
   
 ];
@@ -162,54 +169,118 @@ function showProductDetail(productIndex) {
 
 renderProducts();
 $(document).ready(function() {
-   $(".product-card button:contains('Free Shipping')").click(function() {
+  const productsWithCount = {};
+  let subtotal = 0;
+  let total=0;
+  let discount = 0;
+
+  $(".product-card button:contains('Free Shipping')").click(function() {
     const productIndex = $(this).closest('.product-card').index();
     const product = products[productIndex];
-    const productHTML = `
-    <div class="row">
-      <div class="col-sm-4 product-card">
-        <img src="${product.image}" alt="${product.brand}" class="product-card-image" style="width: 100px;height:100px;">
-      </div>
-      <div class="col-sm-5">                                                          
-      <h3 class="product-card-brand">${product.brand}</h3>
-      <p class="product-card-description" style="font-weight: 5;">${product.description}</p>
-      <div class="row">
-      <span class="col-sm-4 product-card-price">${product.price}$</span><br>
-      <button class="col-sm-2 minus"><i class="fa-solid fa-square-minus" style="color: #e0a1f7;"></i></button>
-      <span class="col-sm-2 count">${product.count+1}</span>
-      <button class="col-sm-4 plus"><i class="fa-regular fa-square-plus" style="color: #db80cc;"></i></button>
-      </div>
-      </div>
-    </div>
-    `;
-    $('.offcanvas-body').append(productHTML);
+    const productId = product.id;
+
+    if (!productsWithCount[productId]) {
+      productsWithCount[productId] = { product: product, count: 1 };
+      const productHTML = getProductCardHTML(product, 1);
+      $('.offcanvas-body').append(productHTML);
+      subtotal += product.price;
+      total= subtotal;
+      updateTotal();
+      updateSubtotal();
+    } else {
+      productsWithCount[productId].count += 1;
+      const countElem = $(`.product-card[data-product-id="${productId}"] .count`);
+      let count = parseInt(countElem.text()) || 0;
+      count++;
+      countElem.text(count);
+      subtotal += product.price;
+      updateSubtotal();
+    }
+    $('input[name="coupon"]').on('input', function() {
+      const couponCode = $(this).val();
+      if (couponCode === '123') {
+        discount = subtotal * 0.1;
+        updateDiscount();
+        updateTotal();
+        $('#discount').text('Coupon code applied!');
+      } else {
+        discount = 0;
+        updateDiscount();
+        updateTotal();
+        $('#discount').text('Invalid coupon code!');
+      }
+    });
+
+    $('.minus').click(function() {
+      const countElem = $(this).siblings('.count');
+      let count = parseInt(countElem.text()) || 0;
+      const productId = $(this).closest('.product-card').data('product-id');
+      if (productsWithCount[productId] && count > 0) {
+        count--;
+        countElem.text(count);
+        productsWithCount[productId].count = count;
+        subtotal -= product.price;
+        total= subtotal;
+        updateSubtotal();
+        updateTotal();
+      }
+    });
+
+    $('.plus').click(function(){
+      const countElem = $(this).siblings('.count');
+      let count = parseInt(countElem.text()) || 0;
+      const productId = $(this).closest('.product-card').data('product-id');
+      if (productsWithCount[productId]) {
+        count++;
+        countElem.text(count);
+        productsWithCount[productId].count = count;
+        subtotal += product.price;
+        total= subtotal;
+        updateSubtotal();
+        updateTotal();
+      }
+    });
+
     $('.offcanvas-body').css({
       'max-height': '520px',
       'display': 'block'
     });
-    $('.minus').click(function() {
-      const productIndex = $(this).closest('.product-card').index();
-      const product = products[productIndex];
-      if (product && product.count !== undefined) {
-        product.count--;
-        $(this).siblings('.count').text(product.count);
-        console.log("Product count:", product.count);
-        console.log("Selected element:", $(this).siblings('.count'));
-      }
-    });
-    
-    $('.plus').click(function(){
-      const productIndex = $(this).closest('.product-card').index();
-      const product = products[productIndex];
-      if (product && product.count !== undefined) {
-        product.count++;
-        $(this).siblings('.count').text(product.count);
-        console.log("Product count:", product.count);
-        console.log("Selected element:", $(this).siblings('.count'));
-      }
-    });
   });
- });
+  function getProductCardHTML(product, count) {
+    return `
+      <div class="row product-card" data-product-id="${product.id}">
+        <div class="col-md-6">
+          <img src="${product.image}" alt="${product.brand}" class="product-card-image" style="width: 100px;height:100px;padding:10px">
+        </div>
+        <div class="col-md-6">                                                          
+          <h3 class="product-card-brand">${product.brand}</h3>
+          <p class="product-card-description" style="font-weight: 5;">${product.description}</p>
+          <div class="row">
+            <span class="col-sm-4 product-card-price">${product.price}$</span>
+            <button class="col-sm-2 minus">
+              <i class="fa-solid fa-square-minus" style="color: #e0a1f7;"></i>
+            </button>
+            <span class="col-sm-2 count">${count}</span>
+            <button class="col-sm-4 plus">
+              <i class="fa-regular fa-square-plus" style="color: #db80cc;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateSubtotal() {
+    $('#sub').text(subtotal.toFixed(2)+'$' );
+  }
+  function updateTotal(){
+    total = subtotal-discount;
+    $('#total').text(total.toFixed(2)+'$');
+  }
+  function updateDiscount(){
+    $('#discount').text(discount.toFixed(2)+'$')
+  }
+});
  $(document).ready(function() {
   const recentViewIds = [];
 
@@ -250,11 +321,36 @@ $(document).ready(function() {
   });
 });
 $(document).ready(function() {
-  $(".category-button").click(function() {
-    
-    
+  $('.category-button button').click(function() {
+    const category = $(this).data('category');
+
+    const filteredProducts = products.filter(product => product.type === category);
+
+    $('.product-container').empty();
+    filteredProducts.forEach(product => {
+      const productHTML = getProductHTML(product);
+      $('.product-container').append(productHTML);
+    });
   });
+
+  function getProductHTML(product) {
+    return `
+      <div class="row">
+        <div class="col-sm-4 product-card">
+          <img src="${product.image}" alt="${product.brand}" class="product-card-image product-${product.id}" style="width: 100px;height:100px;">
+        </div>
+        <div class="col-sm-5">                                                          
+          <h3 class="product-card-brand">${product.brand}</h3>
+          <p class="product-card-description" style="font-weight: 5;">${product.description}</p>
+          <div class="row">
+            <span class="col-sm-4 product-card-price">${product.price}$</span><br>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 });
+
 
 
 

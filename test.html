@@ -16,11 +16,11 @@
       <input type="text" placeholder="Search for a product"></div>
 
   <div class="category-button">
-      <button><img src="list.png" alt=""></button>
-      <button><img src="headphones.png" alt="" data-category="headphone">Headphone</button>
-      <button><img src="earphones.png" alt="" data-category="earphone">Earphone</button>
-      <button><img src="speaker.png" alt="" data-category="Speaker">Speaker</button>
-      <button><img src="laptop.png" alt="" data-category="Laptop">Laptop</button>
+      <button class="all"><img src="list.png" alt=""></button>
+      <button class="headphone"><img src="headphones.png" alt="" data-category="headphone">Headphone</button>
+      <button class="earphone"><img src="earphones.png" alt="" data-category="earphone">Earphone</button>
+      <button class="case"><img src="speaker.png" alt="" data-category="Speaker">Case</button>
+      <button class="laptop"><img src="laptop.png" alt="" data-category="Laptop">Laptop</button>
   </div>
 
   <section class="product"> 
@@ -47,23 +47,23 @@
         </div>
         <div class="inside">        
           <p class="coupon">Have a coupon code? enter here </p>
-          <input type="text" name="" id="">
+          <input type="text" name="coupon" id="">
           <div class="row">
             <div class="col-sm-8">Subtotal: </div>
-            <div class="col-sm-4" id="sub">$</div>
+            <div class="col-sm-4" id="sub"></div>
           </div>
           <div class="row" >
             <div class="col-sm-8">Delivery Fee: </div>
-            <div class="col-sm-4">$</div>
+            <div class="col-sm-4">0.00$</div>
           </div>
           <div class="row">
             <div class="col-sm-8">Discount: </div>
-            <div class="col-sm-4">$ <span class="txt"></span></div>
+            <div class="col-sm-4"id="discount"><span class="txt"></span></div>
           </div>
           <hr>
           <div class="row">
             <div class="col-sm-8">Total: </div>
-            <div class="col-sm-4">%</div>
+            <div class="col-sm-4" id="total"></div>
           </div>
           <button class="continue">Continue</button></div>
       </div>

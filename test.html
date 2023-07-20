@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  
+  <link rel="stylesheet" href="test.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://kit.fontawesome.com/4a98913bfc.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="search-bar">
+      <input type="text" placeholder="Search for a product"></div>
+
+  <div class="category-button">
+      <button><img src="list.png" alt=""></button>
+      <button><img src="headphones.png" alt="" data-category="headphone">Headphone</button>
+      <button><img src="earphones.png" alt="" data-category="earphone">Earphone</button>
+      <button><img src="speaker.png" alt="" data-category="Speaker">Speaker</button>
+      <button><img src="laptop.png" alt="" data-category="Laptop">Laptop</button>
+  </div>
+
+  <section class="product"> 
+    <div class="row">
+      <div class="col-md-9">
+        <h2 class="product-category">HOT SALES</h2>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#d">
+          View Cart<i class="fa-solid fa-cart-arrow-down" style="color: #f788e4;"></i>
+         </button>
+      </div>
+    </div>
+
+      <div class="offcanvas offcanvas-end" id="d">
+        <div class="offcanvas-header">
+          <img src="karina.jpg" alt="">
+          <h1 class="offcanvas-title">Deliver to Sarah Chan</h1>
+          <span>Phnom Penh, Cambodia</span>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+          <!-- display -->
+        </div>
+        <div class="inside">        
+          <p class="coupon">Have a coupon code? enter here </p>
+          <input type="text" name="" id="">
+          <div class="row">
+            <div class="col-sm-8">Subtotal: </div>
+            <div class="col-sm-4" id="sub">$</div>
+          </div>
+          <div class="row" >
+            <div class="col-sm-8">Delivery Fee: </div>
+            <div class="col-sm-4">$</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">Discount: </div>
+            <div class="col-sm-4">$ <span class="txt"></span></div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-8">Total: </div>
+            <div class="col-sm-4">%</div>
+          </div>
+          <button class="continue">Continue</button></div>
+      </div>
+      <div>
+        <button class="pre-btn">&#10094;</button>
+        <button class="nxt-btn">&#10095;</button>
+      </div>
+      <div class="product-container">
+          <!-- Product cards -->
+      </div>
+      <div class="font">
+        <br>
+        <h3>Recent Views</h3>
+      </div>
+      <div class="recent-view">
+        <!-- display here-->
+      </div>
+
+  </section>
+   <script src="test.js"></script>
+
+</body>
+</html>
